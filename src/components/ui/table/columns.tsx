@@ -1,10 +1,12 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { ChevronsUpDown, CircleX, Edit } from "lucide-react";
 import { Button } from "../button";
+import useTaskStore from "../../../stores/edit-task";
 
 
 const useTableColumns = () => {
   const columnHelper = createColumnHelper<TTasks>();
+  const { setOpen, setTask } = useTaskStore();
 
   const columns = [
     columnHelper.accessor("title", {
@@ -105,7 +107,7 @@ const useTableColumns = () => {
     }),
 
     columnHelper.accessor("id", {
-      cell: () => {
+      cell: (info) => {
         return (
           <div className="items-left flex w-full justify-center gap-2 px-4">
             <Button
@@ -113,7 +115,8 @@ const useTableColumns = () => {
               className="size-fit !bg-transparent"
               size="icon"
               onClick={() => {
-                
+                setOpen(true);
+                setTask(info.row.original);
               }}
             >
                 <Edit size={16} />

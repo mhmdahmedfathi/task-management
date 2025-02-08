@@ -3,5 +3,12 @@ interface TTasks {
     title: string;
     description: string;
     dueDate: string;
-    status: string;
+    status: 'Pending' | 'Completed' | 'Overdue';
+}
+
+interface ITaskStore {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    task: TTasks | null;
+    setTask: (task: TTasks) => void;
 }

@@ -15,6 +15,8 @@ import {
 import TableFilters from "./table-filters";
 import { DataTable } from "../data-table";
 import TablePagination from "./table-pagination";
+import AddEditTask from "./add-edit-task";
+import useTaskStore from "../../../stores/edit-task";
 
 
 interface TableProps {
@@ -28,6 +30,7 @@ const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
     []
   )
   const [globalFilter, setGlobalFilter] = useState("");
+  const { open, setOpen, task } = useTaskStore();
 
 
   // Table instance
@@ -72,6 +75,7 @@ const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
         totalPages={table.getPageCount()}
         onPageChange={table.setPageIndex}
       />
+      <AddEditTask isEdit task={task} open={open} setOpen={setOpen}  />
     </div>
   );
 };
