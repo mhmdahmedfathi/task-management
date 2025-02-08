@@ -20,7 +20,7 @@ import useTaskStore from "../../../stores/edit-task";
 
 
 interface TableProps {
-  columns: AccessorKeyColumnDef<TTasks, string>[]
+  columns: AccessorKeyColumnDef<TTasks, "Pending" | "Completed" | "Overdue">[]
   data: TTasks[]
 }
 
@@ -49,7 +49,7 @@ const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
       columnFilters,
       globalFilter,
     },
-    globalFilterFn: (row, columnId, filterValue) => {
+    globalFilterFn: (row, _, filterValue) => {
       const title = row.getValue("title") as string;
       const description = row.getValue("description") as string;
       return (

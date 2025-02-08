@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { ChevronsUpDown, CircleX, Edit } from "lucide-react";
 import { Button } from "../button";
 import useTaskStore from "../../../stores/edit-task";
+import taskService from "../../../services/taskService";
 
 
 const useTableColumns = () => {
@@ -126,6 +127,7 @@ const useTableColumns = () => {
               className="size-fit !bg-transparent"
               size="icon"
               onClick={async () => {
+                await taskService.deleteTask(info.row.original.id);
               }}
             >
                 <CircleX size={16} />

@@ -15,7 +15,7 @@ import {
 
 interface DataTableProps {
   table: TTable<TTasks>
-  columns: AccessorKeyColumnDef<TTasks, string>[]
+  columns: AccessorKeyColumnDef<TTasks, "Pending" | "Completed" | "Overdue">[]
 }
 
 export const DataTable: React.FC<DataTableProps> = ({ table, columns }) => {
