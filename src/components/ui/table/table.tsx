@@ -21,8 +21,8 @@ import DeleteConfirmation from "../delete-confirmation";
 
 
 interface TableProps {
-  columns: AccessorKeyColumnDef<TTasks, "Pending" | "Completed" | "Overdue">[]
-  data: TTasks[]
+  columns: AccessorKeyColumnDef<TTaskTable, "Pending" | "Completed" | "Overdue">[]
+  data: TTaskTable[]
 }
 
 const TasksTable: React.FC<TableProps> = ({ columns, data }) => {

@@ -13,8 +13,8 @@ interface TTaskTable extends TTasks {
 interface ITaskStore {
     open: boolean;
     setOpen: (open: boolean) => void;
-    task: TTasks | null;
-    setTask: (task: TTasks) => void;
+    task: TTaskTable | null;
+    setTask: (task: TTaskTable) => void;
 }
 
 interface IDeleteTaskStore {

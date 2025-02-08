@@ -9,7 +9,7 @@ import taskService from '../../services/taskService';
 
 const TaskManager: React.FC = () => {
 
-  const [tasks, setTasks] = useState<TTasks[]>([]);
+  const [tasks, setTasks] = useState<TTaskTable[]>([]);
 
   useEffect(() => {
     taskService.onTaskUpdate((tasks) => {
@@ -17,7 +17,7 @@ const TaskManager: React.FC = () => {
     });
   }, []);
 
-  const columns = useTableColumns() as AccessorKeyColumnDef<TTasks, "Pending" | "Completed" | "Overdue">[]
+  const columns = useTableColumns() as AccessorKeyColumnDef<TTaskTable, "Pending" | "Completed" | "Overdue">[]
 
   return (
     <div className="min-h-screen w-screen bg-gray-100">

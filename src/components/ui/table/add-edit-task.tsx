@@ -40,7 +40,7 @@ interface IAddEditTask {
     open: boolean;
     setOpen: (open: boolean) => void;
     isEdit?: boolean;
-    task?: TTasks | null;
+    task?: TTaskTable | null;
 }
 
 // Zod Schema for Validation
@@ -49,6 +49,7 @@ const taskSchema = z.object({
     description: z.string().optional(),
     dueDate: z.string().min(1, "Due date is required"),
     priority: z.enum(["Low", "Medium", "High"]),
+    status: z.enum(["Pending", "Completed", "Overdue"]).optional(),
 });
 
 // Infer Type from Zod Schema
@@ -196,6 +197,47 @@ const AddEditTask: React.FC<IAddEditTask> = ({
                                 </FormItem>
                             )}
                         />
+
+                        {
+                            isEdit && task && (
+                                <FormField
+                                    control={taskForm.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="block text-sm font-medium text-gray-700">
+                                                Status
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    onValueChange={field.onChange}
+                                                    value={field.value}
+                                                >
+                                                    <SelectTrigger className="!bg-white mt-1 !p-1 block w-full rounded-md !border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                                        <SelectValue placeholder="Select status" />
+                                                    </SelectTrigger>
+                                                    <SelectContent className="bg-white text-black rounded-md shadow-lg">
+                                                        <SelectGroup>
+                                                            <SelectLabel>Status</SelectLabel>
+                                                            <SelectItem value="Pending" className="hover:bg-gray-100 cursor-pointer">
+                                                                Pending
+                                                            </SelectItem>
+                                                            <SelectItem value="Completed" className="hover:bg-gray-100 cursor-pointer">
+                                                                Completed
+                                                            </SelectItem>
+                                                            <SelectItem value="Overdue" className="hover:bg-gray-100 cursor-pointer">
+                                                                Overdue
+                                                            </SelectItem>
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage className="text-sm text-red-600" />
+                                        </FormItem>
+                                    )}
+                                />
+                            )
+                        }
 
                         <Button
                             type="submit"

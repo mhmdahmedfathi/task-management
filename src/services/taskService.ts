@@ -13,16 +13,21 @@ class TaskService {
 
     async getTasks() {
         const querySnapshot = await getDocs(collection(db, "tasks"));
-        const tasks: TTasks[] = [];
+        const tasks: TTaskTable[] = [];
         querySnapshot.forEach((doc) => {
-            return tasks.push({...doc.data() as TTasks, id: doc.id });
+            return tasks.push({...doc.data() as TTaskTable, id: doc.id });
         });
         return tasks;
     }
 
-    async updateTask(task: TTasks) {
+    async updateTask(task: Partial<TTaskTable>) {
         try {
-            await updateDoc(doc(db, "tasks", task.id), task as Partial<TTasks>);
+            if (task.id) {
+                await updateDoc(doc(db, "tasks", task.id), task);
+                console.log("Document updated with ID: ", task.id);
+            } else {
+                console.error("Error updating document: task.id is undefined");
+            }
             console.log("Document updated with ID: ", task.id);
         } catch (e) {
             console.error("Error updating document: ", e);
@@ -38,17 +43,17 @@ class TaskService {
         }
     }
     
-    async onTaskUpdate(callback: (tasks: TTasks[]) => void) {
+    async onTaskUpdate(callback: (tasks: TTaskTable[]) => void) {
         const querySnapshot = await getDocs(collection(db, "tasks"));
-        const tasks: TTasks[] = [];
+        const tasks: TTaskTable[] = [];
         querySnapshot.forEach((doc) => {
-            return tasks.push({...doc.data() as TTasks, id: doc.id });
+            return tasks.push({...doc.data() as TTaskTable, id: doc.id });
         });
         callback(tasks);
         onSnapshot(collection(db, "tasks"), (snapshot) => {
-            const tasks: TTasks[] = [];
+            const tasks: TTaskTable[] = [];
             snapshot.forEach((doc) => {
-                return tasks.push({...doc.data() as TTasks, id: doc.id });
+                return tasks.push({...doc.data() as TTaskTable, id: doc.id });
             });
             callback(tasks);
         });

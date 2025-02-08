@@ -12,10 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from "./table"
+import { cn } from "../../lib/utils"
 
 interface DataTableProps {
-  table: TTable<TTasks>
-  columns: AccessorKeyColumnDef<TTasks, "Pending" | "Completed" | "Overdue">[]
+  table: TTable<TTaskTable>
+  columns: AccessorKeyColumnDef<TTaskTable, "Pending" | "Completed" | "Overdue">[]
 }
 
 export const DataTable: React.FC<DataTableProps> = ({ table, columns }) => {
@@ -48,11 +49,24 @@ export const DataTable: React.FC<DataTableProps> = ({ table, columns }) => {
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  const dueDateStr = row.original.dueDate;
+                  const dueDate = new Date(dueDateStr);
+                  const isPastDue = (dueDate < new Date()) && row.original.status !== "Completed";
+                  const isCompleted = row.original.status === "Completed";
+            
+                  return (
+                    <TableCell 
+                      key={cell.id}
+                      className={cn(
+                        isPastDue ? "bg-red-100 dark:bg-red-900" : "",
+                        isCompleted ? "bg-green-100 dark:bg-green-900 line-through" : "",
+                      )}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  )
+                })}
               </TableRow>
             ))
           ) : (

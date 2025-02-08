@@ -3,12 +3,16 @@ import { ChevronsUpDown, CircleX, Edit } from "lucide-react";
 import { Button } from "../button";
 import useTaskStore from "../../../stores/edit-task";
 import useDeleteTaskStore from "../../../stores/delete-task";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebaseConfig";
+import { cn } from "../../../lib/utils";
 
 
 const useTableColumns = () => {
   const columnHelper = createColumnHelper<TTaskTable>();
   const { setOpen, setTask } = useTaskStore();
   const { setOpen:setDeleteOpen,setTaskId } = useDeleteTaskStore();
+  const [user] = useAuthState(auth);
 
   const columns = [
     columnHelper.accessor("title", {
@@ -132,12 +136,18 @@ const useTableColumns = () => {
     }),
     columnHelper.accessor("id", {
       cell: (info) => {
+        const completed = info.row.original.status === "Completed";
+        const overdue = new Date(info.row.original.dueDate) < new Date();
         return (
-          <div className="items-left flex w-full justify-center gap-2 px-4">
+          <div className={cn(
+            "items-left flex w-full justify-center gap-2 px-4",
+            user ? "text-sm font-normal text-[#7a7a7a]" : "hidden",
+          )}>
             <Button
               variant="ghost"
               className="size-fit !bg-transparent"
               size="icon"
+              disabled={completed || overdue}
               onClick={() => {
                 setOpen(true);
                 setTask(info.row.original);
@@ -149,6 +159,7 @@ const useTableColumns = () => {
               variant="ghost"
               className="size-fit !bg-transparent"
               size="icon"
+              disabled={completed || overdue}
               onClick={
                 () => {
                   setTaskId(info.getValue());
@@ -163,7 +174,10 @@ const useTableColumns = () => {
       },
       header: () => {
         return (
-          <div className="flex w-full items-center justify-center gap-2 text-base font-bold !bg-transparent">
+          <div className={cn(
+            "flex w-full items-center justify-center gap-2 text-base font-bold !bg-transparent",
+            user ? "text-[#7a7a7a]" : "hidden",
+          )}>
             Action
           </div>
         );

@@ -4,7 +4,7 @@ const useTaskStore = create<ITaskStore>((set) => ({
     open: false,
     setOpen: (open: boolean) => set({ open }),
     task: null,
-    setTask: (task: TTasks) => set({ task }),
+    setTask: (task: TTaskTable) => set({ task }),
 }))
 
 export default useTaskStore;
