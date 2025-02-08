@@ -144,10 +144,9 @@ const AddEditTask: React.FC<IAddEditTask> = ({
                             <FormItem className="flex flex-col space-y-2">
                                 <FormLabel className="text-sm font-medium text-gray-700">Due Date</FormLabel>
                                 <DatePicker
-                                    onChange={(date) => field.onChange(date instanceof Date ? date.toLocaleDateString('en-GB') : '')}
+                                    onChange={(date) => field.onChange(date?.toString() ?? "")}
                                     className={cn("w-full text-black p-2 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500")}
-                                    value={field.value ? new Date(field.value) : null}
-                                    format="dd/MM/yyyy"
+                                    value={field.value}
                                 />     
                                 <FormMessage className="text-sm text-red-600" />                           
                             </FormItem>

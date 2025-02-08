@@ -59,9 +59,9 @@ const useTableColumns = () => {
     columnHelper.accessor("dueDate", {
       cell: (info) => {
         return (
-          <div className="dark:text-dark-text px-4 text-left text-sm font-normal text-[#7a7a7a]">
-            {info.getValue()}
-          </div>
+            <div className="dark:text-dark-text px-4 text-left text-sm font-normal text-[#7a7a7a]">
+            {new Date(info.getValue()).toLocaleDateString('en-GB')}
+            </div>
         );
       },
       header: ({ column }) => {

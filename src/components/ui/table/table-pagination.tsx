@@ -12,26 +12,26 @@ import {
 interface TablePaginationProps {
     currentPage: number;
     totalPages: number;
-    onPageChange: (page: number) => void;
+    handlePagination: (isNext: boolean) => void;
 }
 
-const TablePagination: React.FC<TablePaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+const TablePagination: React.FC<TablePaginationProps> = ({ currentPage, totalPages, handlePagination }) => {
     const handlePrevious = () => {
         if (currentPage > 1) {
-            onPageChange(currentPage - 1);
+            handlePagination(false);
         }
     };
 
     const handleNext = () => {
         if (currentPage < totalPages) {
-            onPageChange(currentPage + 1);
+            handlePagination(true);
         }
     };
 
     return (
         <Pagination>
             <PaginationContent>
-                <PaginationItem>
+                <PaginationItem className='cursor-pointer'>
                     {
                         currentPage > 1 ? (
                             <PaginationPrevious onClick={handlePrevious} />
@@ -52,7 +52,7 @@ const TablePagination: React.FC<TablePaginationProps> = ({ currentPage, totalPag
                 <PaginationItem>
                     <PaginationEllipsis />
                 </PaginationItem>
-                <PaginationItem>
+                <PaginationItem className='cursor-pointer'>
                     {
                         currentPage < totalPages ? (
                             <PaginationNext onClick={handleNext} />

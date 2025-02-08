@@ -73,7 +73,13 @@ const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
       <TablePagination 
         currentPage={table.getState().pagination.pageIndex + 1}
         totalPages={table.getPageCount()}
-        onPageChange={table.setPageIndex}
+        handlePagination={(isNext:boolean)=>{
+          if(isNext){
+            table.nextPage();
+          }else{
+            table.previousPage();
+          }
+        }}
       />
       <AddEditTask isEdit task={task} open={open} setOpen={setOpen}  />
     </div>
