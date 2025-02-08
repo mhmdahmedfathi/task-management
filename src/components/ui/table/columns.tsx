@@ -1,18 +1,15 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { ChevronsUpDown, CircleX, Edit } from "lucide-react";
 import { Button } from "../button";
-import useTaskStore from "../../../stores/edit-task";
+import useEditTaskStore from "../../../stores/edit-task";
 import useDeleteTaskStore from "../../../stores/delete-task";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebaseConfig";
 import { cn } from "../../../lib/utils";
 
 
 const useTableColumns = () => {
   const columnHelper = createColumnHelper<TTaskTable>();
-  const { setOpen, setTask } = useTaskStore();
+  const { setOpen, setTask } = useEditTaskStore();
   const { setOpen:setDeleteOpen,setTaskId } = useDeleteTaskStore();
-  const [user] = useAuthState(auth);
 
   const columns = [
     columnHelper.accessor("title", {
@@ -141,7 +138,6 @@ const useTableColumns = () => {
         return (
           <div className={cn(
             "items-left flex w-full justify-center gap-2 px-4",
-            user ? "text-sm font-normal text-[#7a7a7a]" : "hidden",
           )}>
             <Button
               variant="ghost"
@@ -176,7 +172,6 @@ const useTableColumns = () => {
         return (
           <div className={cn(
             "flex w-full items-center justify-center gap-2 text-base font-bold !bg-transparent",
-            user ? "text-[#7a7a7a]" : "hidden",
           )}>
             Action
           </div>

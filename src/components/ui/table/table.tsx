@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   SortingState,
@@ -9,29 +7,24 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  AccessorKeyColumnDef,
 } from "@tanstack/react-table";
 
 import TableFilters from "./table-filters";
 import { DataTable } from "../data-table";
 import TablePagination from "./table-pagination";
 import AddEditTask from "./add-edit-task";
-import useTaskStore from "../../../stores/edit-task";
+import useEditTaskStore from "../../../stores/edit-task";
 import DeleteConfirmation from "../delete-confirmation";
+import useTaskStore from "../../../stores/tasks";
 
-
-interface TableProps {
-  columns: AccessorKeyColumnDef<TTaskTable, "Pending" | "Completed" | "Overdue">[]
-  data: TTaskTable[]
-}
-
-const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
+const TasksTable: React.FC = () => {
+  const { tasks:data, columns } = useTaskStore();
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
   const [globalFilter, setGlobalFilter] = useState("");
-  const { open, setOpen, task } = useTaskStore();
+  const { open, setOpen, task } = useEditTaskStore();
 
 
   // Table instance
@@ -69,7 +62,6 @@ const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
       />
       <DataTable
         table={table}
-        columns={columns}
       />
       <TablePagination 
         currentPage={table.getState().pagination.pageIndex + 1}

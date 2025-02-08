@@ -10,7 +10,7 @@ interface TTaskTable extends TTasks {
     status: 'Pending' | 'Completed' | 'Overdue'
 }
 
-interface ITaskStore {
+interface IEditTaskStore {
     open: boolean;
     setOpen: (open: boolean) => void;
     task: TTaskTable | null;
@@ -23,4 +23,11 @@ interface IDeleteTaskStore {
     taskId: string;
     setTaskId: (taskId: string) => void;
     onConfirm: (taskId) => void;
+}
+
+interface ITaskStore {
+    tasks: TTaskTable[];
+    setTasks: (tasks: TTaskTable[]) => void;
+    columns: AccessorKeyColumnDef<TTaskTable, "Pending" | "Completed" | "Overdue">[];
+    setColumns: (columns: AccessorKeyColumnDef<TTaskTable, "Pending" | "Completed" | "Overdue">[]) => void;
 }

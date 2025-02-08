@@ -35,6 +35,7 @@ import {
 import { Button } from '../button';
 import { cn } from '../../../lib/utils';
 import taskService from '../../../services/taskService';
+import { Textarea } from '../textarea';
 
 interface IAddEditTask {
     open: boolean;
@@ -133,7 +134,7 @@ const AddEditTask: React.FC<IAddEditTask> = ({
                                         Description
                                     </FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <Textarea
                                             placeholder="Enter description"
                                             {...field}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
