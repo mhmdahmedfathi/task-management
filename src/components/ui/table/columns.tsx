@@ -2,12 +2,13 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { ChevronsUpDown, CircleX, Edit } from "lucide-react";
 import { Button } from "../button";
 import useTaskStore from "../../../stores/edit-task";
-import taskService from "../../../services/taskService";
+import useDeleteTaskStore from "../../../stores/delete-task";
 
 
 const useTableColumns = () => {
-  const columnHelper = createColumnHelper<TTasks>();
+  const columnHelper = createColumnHelper<TTaskTable>();
   const { setOpen, setTask } = useTaskStore();
+  const { setOpen:setDeleteOpen,setTaskId } = useDeleteTaskStore();
 
   const columns = [
     columnHelper.accessor("title", {
@@ -83,6 +84,29 @@ const useTableColumns = () => {
       size: 15,
       minSize: 150,
     }),
+    columnHelper.accessor("priority", {
+      cell: (info) => {
+        return (
+          <div className="dark:text-dark-text px-4 text-left text-sm font-normal text-[#7a7a7a]">
+            {info.getValue()}
+          </div>
+        );
+      },
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="flex w-full items-center justify-between gap-2 text-base font-bold !bg-transparent"
+          >
+            Priority
+            <ChevronsUpDown className="size-3 text-[#7a7a7a]" />
+          </Button>
+        );
+      },
+      size: 15,
+      minSize: 150,
+    }),
     columnHelper.accessor("status", {
       cell: (info) => {
         return (
@@ -106,7 +130,6 @@ const useTableColumns = () => {
       size: 15,
       minSize: 150,
     }),
-
     columnHelper.accessor("id", {
       cell: (info) => {
         return (
@@ -126,9 +149,12 @@ const useTableColumns = () => {
               variant="ghost"
               className="size-fit !bg-transparent"
               size="icon"
-              onClick={async () => {
-                await taskService.deleteTask(info.row.original.id);
-              }}
+              onClick={
+                () => {
+                  setTaskId(info.getValue());
+                  setDeleteOpen(true);
+                }
+              }
             >
                 <CircleX size={16} />
             </Button>

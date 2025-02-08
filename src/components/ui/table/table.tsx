@@ -17,6 +17,7 @@ import { DataTable } from "../data-table";
 import TablePagination from "./table-pagination";
 import AddEditTask from "./add-edit-task";
 import useTaskStore from "../../../stores/edit-task";
+import DeleteConfirmation from "../delete-confirmation";
 
 
 interface TableProps {
@@ -82,6 +83,7 @@ const TasksTable: React.FC<TableProps> = ({ columns, data }) => {
         }}
       />
       <AddEditTask isEdit task={task} open={open} setOpen={setOpen}  />
+      <DeleteConfirmation />
     </div>
   );
 };

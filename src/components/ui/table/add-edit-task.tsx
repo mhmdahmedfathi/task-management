@@ -46,9 +46,9 @@ interface IAddEditTask {
 // Zod Schema for Validation
 const taskSchema = z.object({
     title: z.string().min(1, "Title is required"),
-    description: z.string().min(1, "Description is required"),
+    description: z.string().optional(),
     dueDate: z.string().min(1, "Due date is required"),
-    status: z.enum(["Pending", "Completed", "Overdue"]),
+    priority: z.enum(["Low", "Medium", "High"]),
 });
 
 // Infer Type from Zod Schema
@@ -63,6 +63,12 @@ const AddEditTask: React.FC<IAddEditTask> = ({
 
     const taskForm = useForm<TaskFormData>({
         resolver: zodResolver(taskSchema),
+        defaultValues: {
+            title: "",
+            description: "",
+            dueDate: "",
+            priority: "Low",
+        }
     });
 
     const onSubmit: SubmitHandler<TaskFormData> = (data) => {
@@ -70,7 +76,7 @@ const AddEditTask: React.FC<IAddEditTask> = ({
             taskService.updateTask({ ...task, ...data });
         }
         else {
-            const newTask = { ...data, id: crypto.randomUUID() };
+            const newTask = { ...data, id: crypto.randomUUID(), description: data.description ?? "" };
             taskService.createTask(newTask);
         }
         taskForm.reset();
@@ -156,11 +162,11 @@ const AddEditTask: React.FC<IAddEditTask> = ({
 
                         <FormField
                             control={taskForm.control}
-                            name="status"
+                            name="priority"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="block text-sm font-medium text-gray-700">
-                                        Status
+                                        Priority
                                     </FormLabel>
                                     <FormControl>
                                         <Select
@@ -173,14 +179,14 @@ const AddEditTask: React.FC<IAddEditTask> = ({
                                             <SelectContent className="bg-white text-black rounded-md shadow-lg">
                                                 <SelectGroup>
                                                     <SelectLabel>Status</SelectLabel>
-                                                    <SelectItem value="Pending" className="hover:bg-gray-100 cursor-pointer">
-                                                        Pending
+                                                    <SelectItem value="Low" className="hover:bg-gray-100 cursor-pointer">
+                                                        Low
                                                     </SelectItem>
-                                                    <SelectItem value="Completed" className="hover:bg-gray-100 cursor-pointer">
-                                                        Completed
+                                                    <SelectItem value="Medium" className="hover:bg-gray-100 cursor-pointer">
+                                                        Medium
                                                     </SelectItem>
-                                                    <SelectItem value="Overdue" className="hover:bg-gray-100 cursor-pointer">
-                                                        Overdue
+                                                    <SelectItem value="High" className="hover:bg-gray-100 cursor-pointer">
+                                                        High
                                                     </SelectItem>
                                                 </SelectGroup>
                                             </SelectContent>

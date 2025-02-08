@@ -3,7 +3,11 @@ interface TTasks {
     title: string;
     description: string;
     dueDate: string;
-    status: 'Pending' | 'Completed' | 'Overdue';
+    priority: 'Low' | 'Medium' | 'High'
+}
+
+interface TTaskTable extends TTasks {
+    status: 'Pending' | 'Completed' | 'Overdue'
 }
 
 interface ITaskStore {
@@ -11,4 +15,12 @@ interface ITaskStore {
     setOpen: (open: boolean) => void;
     task: TTasks | null;
     setTask: (task: TTasks) => void;
+}
+
+interface IDeleteTaskStore {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    taskId: string;
+    setTaskId: (taskId: string) => void;
+    onConfirm: (taskId) => void;
 }
